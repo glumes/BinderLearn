@@ -8,12 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+        <activity android:name=".BookManagerActivity">
         </activity>
 
         <service
@@ -21,7 +16,34 @@
             android:enabled="true"
             android:exported="true"
             android:process=":remote">
+        </service>
 
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".LocalServiceActivity">
+        </activity>
+
+        <service
+            android:name=".service.LocalService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.ipc.localservice"/>
+            </intent-filter>
+        </service>
+
+        <activity android:name=".RemoteServiceActivity">
+        </activity>
+
+        <service
+            android:name=".service.RemoteService"
+            android:enabled="true"
+            android:exported="true">
         </service>
     </application>
 

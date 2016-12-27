@@ -21,7 +21,7 @@ public class BookManagerService extends Service {
 
     @Override
     public void onCreate() {
-        Log.e(TAG,"current thread name is" + Thread.currentThread().getName());
+        Log.e(TAG,"OnCreate Service Thread Name is" + Thread.currentThread().getName());
         super.onCreate();
     }
 
@@ -32,7 +32,7 @@ public class BookManagerService extends Service {
     IBookManager.Stub mBinder = new IBookManager.Stub() {
         @Override
         public List<Book> getBookList() throws RemoteException {
-            Log.e(TAG,"current thread name is" + Thread.currentThread().getName());
+            Log.e(TAG,"getBookList Thread Name is" + Thread.currentThread().getName());
             return mBookArrayList ;
         }
 
@@ -45,7 +45,7 @@ public class BookManagerService extends Service {
                 e.printStackTrace();
             }
             Log.e(TAG,"add book " + book.getBookName() );
-            Log.e(TAG,"current thread name is" + Thread.currentThread().getName());
+            Log.e(TAG,"addBook Thread Name is" + Thread.currentThread().getName());
             mBookArrayList.add(book);
         }
     };
