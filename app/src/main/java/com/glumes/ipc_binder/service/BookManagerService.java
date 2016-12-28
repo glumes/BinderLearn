@@ -3,11 +3,10 @@ package com.glumes.ipc_binder.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.util.Log;
 
-import com.glumes.ipc_binder.aidl.Book;
-import com.glumes.ipc_binder.aidl.IBookManager;
+import com.glumes.ipc_binder.binder.Book;
+import com.glumes.ipc_binder.binder.BookManagerImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,35 +25,39 @@ public class BookManagerService extends Service {
     }
 
 
-    /**
-     * 方法的具体实现
-     */
-    IBookManager.Stub mBinder = new IBookManager.Stub() {
-        @Override
-        public List<Book> getBookList() throws RemoteException {
-            Log.e(TAG,"getBookList Thread Name is" + Thread.currentThread().getName());
-            return mBookArrayList ;
-        }
+//    /**
+//     * 方法的具体实现
+//     */
+//    IBookManager.Stub mBinder = new IBookManager.Stub() {
+//        @Override
+//        public List<Book> getBookList() throws RemoteException {
+//            Log.e(TAG,"getBookList Thread Name is " + Thread.currentThread().getName());
+//            return mBookArrayList ;
+//        }
+//
+//        @Override
+//        public void addBook(Book book) throws RemoteException {
+//
+//            try {
+//                Thread.sleep(3000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            Log.e(TAG,"add book " + book.getBookName() );
+//            Log.e(TAG,"addBook Thread Name is " + Thread.currentThread().getName());
+//            mBookArrayList.add(book);
+//        }
+//    };
 
-        @Override
-        public void addBook(Book book) throws RemoteException {
 
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Log.e(TAG,"add book " + book.getBookName() );
-            Log.e(TAG,"addBook Thread Name is" + Thread.currentThread().getName());
-            mBookArrayList.add(book);
-        }
-    };
+    BookManagerImpl mBinder = new BookManagerImpl();
 
     public BookManagerService() {
     }
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.d(TAG,"return Binder") ;
         return mBinder ;
     }
 

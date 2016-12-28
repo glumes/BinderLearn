@@ -12,8 +12,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.glumes.ipc_binder.aidl.Book;
-import com.glumes.ipc_binder.aidl.IBookManager;
+import com.glumes.ipc_binder.binder.Book;
+import com.glumes.ipc_binder.binder.BookManagerImpl;
+import com.glumes.ipc_binder.binder.IBookManager;
 import com.glumes.ipc_binder.service.BookManagerService;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class BookManagerActivity extends AppCompatActivity {
     ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            mService = IBookManager.Stub.asInterface(iBinder);
+            mService = BookManagerImpl.asInterface(iBinder);
             Log.e(TAG, "current thread name is" + Thread.currentThread().getName());
             Log.e(TAG, "service is connected");
         }
@@ -69,9 +70,9 @@ public class BookManagerActivity extends AppCompatActivity {
                 if (mService != null) {
                     try {
                         mService.addBook(new Book(1, "aidl"));
-                        Log.e(TAG, "current thread name is" + Thread.currentThread().getName());
-                        Log.e(TAG, "current thread name is" + Thread.currentThread().getState());
-                        Log.e(TAG, "current thread name is" + Thread.currentThread().getId());
+                        Log.e(TAG, "current thread name is " + Thread.currentThread().getName());
+                        Log.e(TAG, "current thread state is " + Thread.currentThread().getState());
+                        Log.e(TAG, "current thread id is " + Thread.currentThread().getId());
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }

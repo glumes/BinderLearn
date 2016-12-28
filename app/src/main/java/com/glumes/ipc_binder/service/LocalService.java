@@ -19,7 +19,6 @@ public class LocalService extends Service {
     @Override
     public void onCreate() {
         Log.d(TAG,"Create Local Service") ;
-        super.onCreate();
     }
 
     @Override
