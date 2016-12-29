@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.glumes.ipc_binder.BookManagerActivity">
+    tools:context="com.glumes.ipc_binder.BookManagerActivityBinder">
 
     <TextView
         android:layout_width="wrap_content"

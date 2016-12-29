@@ -11,12 +11,11 @@ import com.glumes.ipc_binder.binder.BookManagerImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookManagerService extends Service {
+public class BookManagerServiceBinder extends Service {
 
 
-    private static final String TAG = BookManagerService.class.getSimpleName() ;
+    private static final String TAG = BookManagerServiceBinder.class.getSimpleName() ;
     private List<Book> mBookArrayList = new ArrayList<>() ;
-
 
     @Override
     public void onCreate() {
@@ -24,35 +23,9 @@ public class BookManagerService extends Service {
         super.onCreate();
     }
 
-
-//    /**
-//     * 方法的具体实现
-//     */
-//    IBookManager.Stub mBinder = new IBookManager.Stub() {
-//        @Override
-//        public List<Book> getBookList() throws RemoteException {
-//            Log.e(TAG,"getBookList Thread Name is " + Thread.currentThread().getName());
-//            return mBookArrayList ;
-//        }
-//
-//        @Override
-//        public void addBook(Book book) throws RemoteException {
-//
-//            try {
-//                Thread.sleep(3000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            Log.e(TAG,"add book " + book.getBookName() );
-//            Log.e(TAG,"addBook Thread Name is " + Thread.currentThread().getName());
-//            mBookArrayList.add(book);
-//        }
-//    };
-
-
     BookManagerImpl mBinder = new BookManagerImpl();
 
-    public BookManagerService() {
+    public BookManagerServiceBinder() {
     }
 
     @Override

@@ -59,6 +59,21 @@ public class BookManagerImpl extends Binder implements IBookManager{
         return this;
     }
 
+    /**
+     * 当 Client 和 Server 处于同一进程时，不会走 onTransact 调用方法，直接调用上方的 getBookList / addBook 方法
+     * 而当 Client 与 Server 处于不同进程时，则需要 Binder 驱动来跨进程通信。
+     * Client 持有 Binder 的代理对象 Proxy ，调用对应的 getBookList / addBook 方法。
+     * 代理对象 Proxy 则调用在 Binder 驱动中的 mRemote 对象来访问位于另一进程中的 Server 。
+     * Server 收到 Binder 驱动发来的消息时，则调用 onTransact 方法来执行 Client 想要的服务 。
+     * 在 onTransact 的 switch/case 中根据对应的方法 id 执行不同的操作 。
+     *
+     * @param code
+     * @param data
+     * @param reply
+     * @param flags
+     * @return
+     * @throws RemoteException
+     */
     @Override
     protected boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
         switch (code){

@@ -23,6 +23,7 @@ public class LocalService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.d(TAG,binder.toString());
         return binder ;
     }
 
@@ -53,6 +54,11 @@ public class LocalService extends Service {
 
         public void printMsg(){
             Log.d(TAG,"LocalBinder Thread Name is " + Thread.currentThread().getName());
+        }
+
+        @Override
+        public String toString() {
+            return "address is " + super.toString() ;
         }
     }
 

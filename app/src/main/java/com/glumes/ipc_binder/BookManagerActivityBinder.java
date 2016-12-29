@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -15,7 +16,7 @@ import android.widget.Button;
 import com.glumes.ipc_binder.binder.Book;
 import com.glumes.ipc_binder.binder.BookManagerImpl;
 import com.glumes.ipc_binder.binder.IBookManager;
-import com.glumes.ipc_binder.service.BookManagerService;
+import com.glumes.ipc_binder.service.BookManagerServiceBinder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BookManagerActivity extends AppCompatActivity {
+public class BookManagerActivityBinder extends AppCompatActivity {
 
-    private static final String TAG = BookManagerActivity.class.getSimpleName();
+    private static final String TAG = BookManagerActivityBinder.class.getSimpleName();
     @BindView(R.id.stopService)
     Button mStopService;
 
@@ -40,6 +41,18 @@ public class BookManagerActivity extends AppCompatActivity {
             mService = BookManagerImpl.asInterface(iBinder);
             Log.e(TAG, "current thread name is" + Thread.currentThread().getName());
             Log.e(TAG, "service is connected");
+
+            Book book = new Book(1,"test");
+
+            /**
+             * 无须通过 asInterface 方法封装成 Proxy 类，直接通过 Binder 代理对象 iBinder 调用 transact 方法
+             * 也可以通过 Binder 驱动完成跨进程调用
+             */
+            try {
+                addBook(book,iBinder);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -58,7 +71,7 @@ public class BookManagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_manager);
         ButterKnife.bind(this);
-        Intent intent = new Intent(BookManagerActivity.this, BookManagerService.class);
+        Intent intent = new Intent(BookManagerActivityBinder.this, BookManagerServiceBinder.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
@@ -97,5 +110,25 @@ public class BookManagerActivity extends AppCompatActivity {
         }
     }
 
+
+
+    public void addBook(Book book,IBinder mRemote) throws RemoteException {
+        android.os.Parcel _data = android.os.Parcel.obtain();
+        android.os.Parcel _reply = android.os.Parcel.obtain();
+        try {
+            _data.writeInterfaceToken(IBookManager.DESCRIPTOR);
+            if ((book != null)) {
+                _data.writeInt(1);
+                book.writeToParcel(_data, 0);
+            } else {
+                _data.writeInt(0);
+            }
+            mRemote.transact(IBookManager.TRANSACTION_addBook, _data, _reply, 0);
+            _reply.readException();
+        } finally {
+            _reply.recycle();
+            _data.recycle();
+        }
+    }
 
 }

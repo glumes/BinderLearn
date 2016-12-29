@@ -54,6 +54,8 @@ public class LocalServiceActivity extends AppCompatActivity implements View.OnCl
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 Log.d(TAG, "Service Connected");
                 mLocalBinder = (LocalService.LocalBinder) iBinder;
+
+                Log.d(TAG,mLocalBinder.toString());
             }
 
             @Override
